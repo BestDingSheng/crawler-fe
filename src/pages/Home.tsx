@@ -3,10 +3,16 @@ import styled from 'styled-components'
 import { Card } from '../components/common/Card'
 import { useCourseStore } from '../store/courseStore'
 
+const HomeWrapper = styled.div`
+  background: ${props => props.theme.colors.background};
+  min-height: 100%;
+  padding: 24px 0;
+`
+
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
   
   @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
@@ -18,35 +24,41 @@ const Grid = styled.div`
 `
 
 const Navigation = styled.nav`
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  margin-bottom: 32px;
+  background: ${props => props.theme.colors.cardBackground};
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 `
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 
   h1 {
     font-size: 24px;
     margin: 0;
     color: ${props => props.theme.colors.text};
+    font-weight: 600;
   }
 
   span {
     font-size: 12px;
     color: ${props => props.theme.colors.primary};
-    background: ${props => `${props.theme.colors.primary}10`};
-    padding: 2px 8px;
-    border-radius: 4px;
+    background: ${props => `${props.theme.colors.primary}15`};
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
   }
 `
 
 const Menu = styled.ul`
   display: flex;
   gap: 32px;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding-bottom: 16px;
 
   li {
     color: ${props => props.theme.colors.textSecondary};
@@ -54,6 +66,7 @@ const Menu = styled.ul`
     transition: all 0.3s;
     position: relative;
     padding: 4px 0;
+    font-size: 15px;
 
     &:hover {
       color: ${props => props.theme.colors.primary};
@@ -88,6 +101,9 @@ const ErrorMessage = styled.div`
   color: ${props => props.theme.colors.error};
   text-align: center;
   padding: 20px;
+  background: ${props => props.theme.colors.cardBackground};
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 `
 
 // 定义 Tab 类型
@@ -116,7 +132,7 @@ export const Home: React.FC = () => {
   }
 
   return (
-    <div>
+    <HomeWrapper>
       <Navigation>
         <Title>
           <h1>精品创业项目</h1>
@@ -161,6 +177,6 @@ export const Home: React.FC = () => {
           ))}
         </Grid>
       )}
-    </div>
+    </HomeWrapper>
   )
 } 

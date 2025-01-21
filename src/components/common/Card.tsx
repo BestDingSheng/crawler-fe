@@ -22,15 +22,17 @@ interface CardProps {
 
 const CardWrapper = styled.div`
   background: ${props => props.theme.colors.cardBackground};
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  border: 1px solid ${props => props.theme.colors.border};
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    border-color: ${props => props.theme.colors.primary}20;
   }
 `
 
@@ -40,10 +42,22 @@ const Thumbnail = styled.div<{ src: string }>`
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+  }
 `
 
 const Content = styled.div`
-  padding: 12px;
+  padding: 16px;
+  background: ${props => props.theme.colors.cardBackground};
 `
 
 const Title = styled.h3`
@@ -57,10 +71,14 @@ const Title = styled.h3`
   overflow: hidden;
   line-height: 1.4;
   height: 44px;
+
+  &:hover {
+    color: ${props => props.theme.colors.primary};
+  }
 `
 
 const Description = styled.p`
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   color: ${props => props.theme.colors.textSecondary};
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -87,6 +105,7 @@ const Author = styled.div`
   .ant-avatar {
     width: 24px;
     height: 24px;
+    border: 2px solid ${props => props.theme.colors.primary}20;
   }
 
   span {
@@ -106,6 +125,11 @@ const Stats = styled.div`
     display: flex;
     align-items: center;
     gap: 4px;
+    transition: color 0.3s;
+
+    &:hover {
+      color: ${props => props.theme.colors.primary};
+    }
   }
 `
 
