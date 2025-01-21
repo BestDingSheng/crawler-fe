@@ -144,7 +144,7 @@ export const Home: React.FC = () => {
           {courses.map(course => (
             <Card
               key={course.pageId}
-              id={course.pageId}
+              pageId={course.pageId}
               thumbnail={course.imgUrl}
               title={course.title}
               description={course.desc}

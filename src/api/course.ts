@@ -1,10 +1,16 @@
-import axios from './axios';
-import type { CourseQueryParams, CourseListResponse, CourseDetailResponse } from '../types/course';
+import axios from 'axios'
+import type { CourseListResponse, CourseDetailResponse, CourseParams, CourseDetailParams } from '../types/course'
 
-export const getCourseList = async (params: CourseQueryParams = {}): Promise<CourseListResponse> => {
-  return axios.get('/courses', { params });
-};
+const api = axios.create({
+  baseURL: '/api'
+})
 
-export const getCourseDetail = async (pageId: number): Promise<CourseDetailResponse> => {
-  return axios.get(`/courses/${pageId}`);
-}; 
+export const getCourseList = async (params: CourseParams) => {
+  const response = await api.get<CourseListResponse>('/courses', { params })
+  return response.data
+}
+
+export const getCourseDetail = async ({ pageId }: CourseDetailParams) => {
+  const response = await api.get<CourseDetailResponse>(`/courses/${pageId}`)
+  return response.data
+} 

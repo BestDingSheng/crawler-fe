@@ -1,16 +1,29 @@
 export interface Course {
   pageId: number;
-  type: string;
   title: string;
-  desc: string;
   imgUrl: string;
-  publishTime: string;
-  link: string;
+  desc: string;
+  type: string;
 }
 
-export interface CourseDetail extends Course {
+export interface CourseDetail {
+  pageId: number;
+  title: string;
+  imgUrl: string;
+  desc: string;
   detailInfo: string;
-  downloadLink: string;
+  downloadInfo?: {
+    link: string;
+    password: string;
+  };
+}
+
+export interface CourseParams {
+  type: string;
+}
+
+export interface CourseDetailParams {
+  pageId: number;
 }
 
 export interface CourseQueryParams {
