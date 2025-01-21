@@ -23,69 +23,50 @@ const Grid = styled.div`
   }
 `
 
-const Navigation = styled.nav`
+const Header = styled.div`
   margin-bottom: 32px;
-  background: ${props => props.theme.colors.cardBackground};
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 `
 
-const Title = styled.div`
+const TitleSection = styled.div`
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-
-  h1 {
-    font-size: 24px;
-    margin: 0;
-    color: ${props => props.theme.colors.text};
-    font-weight: 600;
-  }
-
-  span {
-    font-size: 12px;
-    color: ${props => props.theme.colors.primary};
-    background: ${props => `${props.theme.colors.primary}15`};
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 500;
-  }
+  gap: 8px;
 `
 
-const Menu = styled.ul`
+const MainTitle = styled.h1`
+  font-size: 20px;
+  font-weight: 600;
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`
+
+const UpdateTag = styled.span`
+  font-size: 12px;
+  color: ${props => props.theme.colors.primary};
+  background: ${props => `${props.theme.colors.primary}15`};
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: normal;
+`
+
+const Navigation = styled.nav`
   display: flex;
-  gap: 32px;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-  padding-bottom: 16px;
+  gap: 24px;
+`
 
-  li {
-    color: ${props => props.theme.colors.textSecondary};
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-    padding: 4px 0;
-    font-size: 15px;
+const NavItem = styled.div<{ active?: boolean }>`
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.active ? '#fff' : props.theme.colors.text};
+  font-weight: ${props => props.active ? '500' : 'normal'};
 
-    &:hover {
-      color: ${props => props.theme.colors.primary};
-    }
-
-    &.active {
-      color: ${props => props.theme.colors.primary};
-      font-weight: 500;
-
-      &:after {
-        content: '';
-        position: absolute;
-        bottom: -17px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: ${props => props.theme.colors.primary};
-      }
-    }
+  &:hover {
+    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.cardBackground};
   }
 `
 
@@ -133,23 +114,23 @@ export const Home: React.FC = () => {
 
   return (
     <HomeWrapper>
-      <Navigation>
-        <Title>
-          <h1>精品创业项目</h1>
-          <span>365x24h自动更新</span>
-        </Title>
-        <Menu>
+      <Header>
+        <TitleSection>
+          <MainTitle>精品创业项目</MainTitle>
+          <UpdateTag>365x24h自动更新</UpdateTag>
+        </TitleSection>
+        <Navigation>
           {tabs.map(tab => (
-            <li
+            <NavItem
               key={tab.id}
-              className={activeTab === tab.id ? 'active' : ''}
+              active={activeTab === tab.id}
               onClick={() => handleTabChange(tab.id)}
             >
               {tab.name}
-            </li>
+            </NavItem>
           ))}
-        </Menu>
-      </Navigation>
+        </Navigation>
+      </Header>
 
       {loading ? (
         <LoadingWrapper>加载中...</LoadingWrapper>

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button, Input } from 'antd'
 import { Container } from './Container'
 import { useTheme } from '../../contexts/ThemeContext'
+import { useNavigate } from 'react-router-dom'
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -22,6 +23,12 @@ const Logo = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: ${props => props.theme.colors.primary};
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `
 
 const SearchBar = styled(Input.Search)`
@@ -36,11 +43,16 @@ const Actions = styled.div`
 
 export const Header: React.FC = () => {
   const { toggleTheme, isDark } = useTheme()
+  const navigate = useNavigate()
+
+  const handleLogoClick = () => {
+    navigate('/')
+  }
 
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <Logo>87创业网</Logo>
+        <Logo onClick={handleLogoClick}>87创业网</Logo>
         <SearchBar placeholder="搜索" />
         <Actions>
           <Button type="text" onClick={toggleTheme}>
