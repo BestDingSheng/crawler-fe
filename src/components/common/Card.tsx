@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { Avatar } from 'antd'
 import { EyeOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
 
 interface CardProps {
+  pageId: number
   thumbnail: string
   title: string
   description: string
@@ -107,9 +109,15 @@ const Stats = styled.div`
   }
 `
 
-export const Card: React.FC<CardProps> = ({ thumbnail, title, description, author, stats }) => {
+export const Card: React.FC<CardProps> = ({ pageId, thumbnail, title, description, author, stats }) => {
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    navigate(`/course/${pageId}`)
+  }
+
   return (
-    <CardWrapper>
+    <CardWrapper onClick={handleClick}>
       <Thumbnail src={thumbnail} />
       <Content>
         <Title>{title}</Title>

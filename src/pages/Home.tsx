@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Card } from '../components/common/Card'
+import { useCourseStore } from '../store/courseStore'
 
 const Grid = styled.div`
   display: grid;
@@ -75,6 +76,20 @@ const Menu = styled.ul`
   }
 `
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: ${props => props.theme.colors.textSecondary};
+`
+
+const ErrorMessage = styled.div`
+  color: ${props => props.theme.colors.error};
+  text-align: center;
+  padding: 20px;
+`
+
 // 定义 Tab 类型
 type Tab = {
   id: string;
@@ -82,101 +97,23 @@ type Tab = {
 }
 
 const tabs: Tab[] = [
-  { id: 'zhongchuang', name: '中创网' },
-  { id: 'fuxin', name: '福新论坛' },
-  { id: 'zenggang', name: '曾港网' },
-  { id: 'zixue', name: '自学点才网' }
+  { id: '中创网', name: '中创网' },
+  { id: '福源论坛', name: '福源论坛' },
+  { id: '冒泡网', name: '冒泡网' },
+  { id: '自学成才网', name: '自学成才网' }
 ]
 
-// 模拟不同 tab 的数据
-const tabData = {
-  zhongchuang: [
-    {
-      id: 1,
-      thumbnail: 'https://picsum.photos/400/300',
-      title: '抖音养号变现，小白轻松上手，兼职赚钱',
-      description: '项目介绍：公司提供抖音视频素材，你按照要求发送即可...',
-      author: {
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
-        name: '87创业网'
-      },
-      stats: {
-        views: 146,
-        likes: 78,
-        comments: 12
-      }
-    },
-    {
-      id: 2,
-      thumbnail: 'https://picsum.photos/400/301',
-      title: '快手无人直播实操流程：从选品到素材制作',
-      description: '课程目录：1快手无人直播室，开播直播续流程...',
-      author: {
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
-        name: '87创业网'
-      },
-      stats: {
-        views: 96,
-        likes: 58,
-        comments: 8
-      }
-    }
-  ],
-  fuxin: [
-    {
-      id: 3,
-      thumbnail: 'https://picsum.photos/400/302',
-      title: 'AI玩转转大模型，普通人也能高效工作生活',
-      description: '课程简介：我们是中国最早出最成功的增长黑客模型...',
-      author: {
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=3',
-        name: '87创业网'
-      },
-      stats: {
-        views: 124,
-        likes: 74,
-        comments: 15
-      }
-    }
-  ],
-  zenggang: [
-    {
-      id: 4,
-      thumbnail: 'https://picsum.photos/400/303',
-      title: '流量引擎实战班，渠道裂变绝密点，剪辑技巧',
-      description: '课程目录：19.超级网赚的精髓总结-六字学之三字学...',
-      author: {
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
-        name: '87创业网'
-      },
-      stats: {
-        views: 116,
-        likes: 68,
-        comments: 9
-      }
-    }
-  ],
-  zixue: [
-    {
-      id: 5,
-      thumbnail: 'https://picsum.photos/400/304',
-      title: '自学编程实战课程：从零开始到项目上线',
-      description: '完整的编程学习路线，包含前端、后端、数据库...',
-      author: {
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=5',
-        name: '87创业网'
-      },
-      stats: {
-        views: 135,
-        likes: 82,
-        comments: 16
-      }
-    }
-  ]
-}
-
 export const Home: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>('zhongchuang')
+  const [activeTab, setActiveTab] = useState<string>('中创网')
+  const { courses, loading, error, fetchCourses } = useCourseStore()
+
+  useEffect(() => {
+    fetchCourses({ type: activeTab })
+  }, [activeTab, fetchCourses])
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId)
+  }
 
   return (
     <div>
@@ -190,18 +127,40 @@ export const Home: React.FC = () => {
             <li
               key={tab.id}
               className={activeTab === tab.id ? 'active' : ''}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabChange(tab.id)}
             >
               {tab.name}
             </li>
           ))}
         </Menu>
       </Navigation>
-      <Grid>
-        {tabData[activeTab as keyof typeof tabData].map(item => (
-          <Card key={item.id} {...item} />
-        ))}
-      </Grid>
+
+      {loading ? (
+        <LoadingWrapper>加载中...</LoadingWrapper>
+      ) : error ? (
+        <ErrorMessage>{error}</ErrorMessage>
+      ) : (
+        <Grid>
+          {courses.map(course => (
+            <Card
+              key={course.pageId}
+              id={course.pageId}
+              thumbnail={course.imgUrl}
+              title={course.title}
+              description={course.desc}
+              author={{
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${course.pageId}`,
+                name: course.type
+              }}
+              stats={{
+                views: 100,
+                likes: 50,
+                comments: 10
+              }}
+            />
+          ))}
+        </Grid>
+      )}
     </div>
   )
 } 
