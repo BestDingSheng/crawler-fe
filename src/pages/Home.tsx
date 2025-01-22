@@ -140,6 +140,7 @@ export const Home: React.FC = () => {
         <Grid>
           {courses.map(course => (
             <Card
+            publishTime={course.publishTime}
               key={course.pageId}
               pageId={course.pageId}
               thumbnail={course.imgUrl}

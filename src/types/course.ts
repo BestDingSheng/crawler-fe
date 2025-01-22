@@ -4,6 +4,7 @@ export interface Course {
   imgUrl: string;
   desc: string;
   type: string;
+  publishTime: string;
 }
 
 export interface CourseDetail {

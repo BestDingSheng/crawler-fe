@@ -10,6 +10,7 @@ const DetailWrapper = styled.div`
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+
 `
 
 const Title = styled.h1`
@@ -19,12 +20,25 @@ const Title = styled.h1`
   margin-bottom: 24px;
 `
 
-const Image = styled.img`
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 24px;
+// const Image = styled.img`
+//   /* width: 100%; */
+//   max-height: 400px;
+//   object-fit: cover;
+//   border-radius: 8px;
+//   margin-bottom: 24px;
+// `
+
+const Image = styled.div`
+    text-align: center;
+    max-height: 400px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    img {
+      object-fit: contain;
+      width: 100%;
+      max-height: 400px;
+      border-radius:8px;
+    }
 `
 
 const Description = styled.div`
@@ -63,6 +77,10 @@ const LoadingWrapper = styled.div`
   min-height: 400px;
 `
 
+const cleanDetailInfo = (info: string): string => {
+  return info.replace(/\n/g, '').trim();
+}
+
 export const CourseDetail: React.FC = () => {
   const { pageId } = useParams<{ pageId: string }>()
   const navigate = useNavigate()
@@ -98,10 +116,11 @@ export const CourseDetail: React.FC = () => {
   return (
     <DetailWrapper>
       <Title>{detail.title}</Title>
-      <Image src={detail.imgUrl} alt={detail.title} />
+      <Image>
+        <img  src={detail.imgUrl} alt={detail.title} />
+      </Image>
       <DetailInfo>
-        <div dangerouslySetInnerHTML={{ __html: detail.detailInfo }}>
-
+        <div dangerouslySetInnerHTML={{ __html: cleanDetailInfo(detail.detailInfo) }}>
         </div>
       </DetailInfo>
       

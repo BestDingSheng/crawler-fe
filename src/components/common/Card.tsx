@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Avatar } from 'antd'
 import { EyeOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import { formatTimeAgo } from '../../utils/dateUtils'
 
 interface CardProps {
   pageId: number
@@ -18,6 +19,7 @@ interface CardProps {
     likes: number
     comments: number
   }
+  publishTime: string
 }
 
 const CardWrapper = styled.div`
@@ -108,9 +110,20 @@ const Author = styled.div`
     border: 2px solid ${props => props.theme.colors.primary}20;
   }
 
-  span {
+  .author-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: ${props => props.theme.colors.textSecondary};
     font-size: 13px;
+
+    .dot {
+      color: ${props => props.theme.colors.border};
+    }
+
+    .time {
+      color: ${props => props.theme.colors.textSecondary};
+    }
   }
 `
 
@@ -133,8 +146,10 @@ const Stats = styled.div`
   }
 `
 
-export const Card: React.FC<CardProps> = ({ pageId, thumbnail, title, description, author, stats }) => {
+export const Card: React.FC<CardProps> = ({ pageId, thumbnail, title, description, author, stats, publishTime }) => {
   const navigate = useNavigate()
+
+  console.log('Card publishTime:', publishTime);
 
   const handleClick = () => {
     navigate(`/course/${pageId}`)
@@ -149,7 +164,11 @@ export const Card: React.FC<CardProps> = ({ pageId, thumbnail, title, descriptio
         <Meta>
           <Author>
             <Avatar src={author.avatar} />
-            <span>{author.name}</span>
+            <div className="author-info">
+              <span>{author.name}</span>
+              <span className="dot">•</span>
+              <span className="time">{formatTimeAgo(publishTime)}</span>
+            </div>
           </Author>
           <Stats>
             <span><EyeOutlined /> {stats.views}</span>
