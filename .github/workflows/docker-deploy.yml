@@ -44,3 +44,9 @@ jobs:
             cd /www/wwwroot/crawler-fe
             docker-compose pull
             docker-compose up -d --force-recreate 
+       # 添加调试信息
+      - name: Debug SSH Connection
+        if: failure()
+        run: |
+          echo "Testing SSH connection..."
+          ssh -v -o StrictHostKeyChecking=no -i <(echo "${{ secrets.SERVER_SSH_KEY }}") ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "echo Connected successfully"
