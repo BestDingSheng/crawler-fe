@@ -31,8 +31,8 @@ jobs:
           context: .
           push: true
           tags: |
-            registry.cn-hangzhou.aliyuncs.com/your-namespace/crawler-fe:latest
-            registry.cn-hangzhou.aliyuncs.com/your-namespace/crawler-fe:${{ env.VERSION }}
+            registry.cn-hangzhou.aliyuncs.com/deson/ding:latest
+            registry.cn-hangzhou.aliyuncs.com/deson/ding:${{ env.VERSION }}
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
