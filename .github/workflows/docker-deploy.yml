@@ -6,9 +6,8 @@ on:
   workflow_dispatch:    # 支持手动触发
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,6 +33,10 @@ jobs:
             registry.cn-hangzhou.aliyuncs.com/deson/ding:latest
             registry.cn-hangzhou.aliyuncs.com/deson/ding:${{ env.VERSION }}
 
+  deploy:
+    needs: build  # 依赖build任务完成
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
@@ -44,9 +47,3 @@ jobs:
             cd /www/wwwroot/crawler-fe
             docker-compose pull
             docker-compose up -d --force-recreate 
-       # 添加调试信息
-      - name: Debug SSH Connection
-        if: failure()
-        run: |
-          echo "Testing SSH connection..."
-          ssh -v -o StrictHostKeyChecking=no -i <(echo "${{ secrets.SERVER_SSH_KEY }}") ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "echo Connected successfully"
